@@ -1,8 +1,9 @@
 # Mongoid Enumerable
 
 [![Build Status](https://travis-ci.org/douglaslise/mongoid_enumerable.svg?branch=master)](https://travis-ci.org/douglaslise/mongoid_enumerable)
-[![Gem Version](https://badge.fury.io/rb/mongoid_enumerable.svg)](https://badge.fury.io/rb/mongoid_enumerable)
 [![Maintainability](https://api.codeclimate.com/v1/badges/bc09bc91c31fed14924a/maintainability)](https://codeclimate.com/github/douglaslise/mongoid_enumerable/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/bc09bc91c31fed14924a/test_coverage)](https://codeclimate.com/github/douglaslise/mongoid_enumerable/test_coverage)
+[![Gem Version](https://badge.fury.io/rb/mongoid_enumerable.svg)](https://badge.fury.io/rb/mongoid_enumerable)
 
 Define enumerable fields in your Mongoid documents.
 
