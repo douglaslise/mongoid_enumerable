@@ -125,6 +125,33 @@ RSpec.describe MongoidEnumerable do
           expect(klass.completed.selector).to eq({"status" => "completed"})
         end
       end
+      context "waiting" do
+        it {expect(klass).to respond_to(:waiting)}
+        it "is a scope" do
+          expect(klass.waiting).to be_a(Mongoid::Criteria)
+        end
+        it "with selector" do
+          expect(klass.waiting.selector).to eq({"status" => "waiting"})
+        end
+      end
+      context "failed" do
+        it {expect(klass).to respond_to(:failed)}
+        it "is a scope" do
+          expect(klass.failed).to be_a(Mongoid::Criteria)
+        end
+        it "with selector" do
+          expect(klass.failed.selector).to eq({"status" => "failed"})
+        end
+      end
+      context "running" do
+        it {expect(klass).to respond_to(:running)}
+        it "is a scope" do
+          expect(klass.running).to be_a(Mongoid::Criteria)
+        end
+        it "with selector" do
+          expect(klass.running.selector).to eq({"status" => "running"})
+        end
+      end
     end
   end
 end
