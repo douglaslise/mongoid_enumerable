@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/douglaslise/mongoid_enumerable.svg?branch=master)](https://travis-ci.org/douglaslise/mongoid_enumerable)
 [![Gem Version](https://badge.fury.io/rb/mongoid_enumerable.svg)](https://badge.fury.io/rb/mongoid_enumerable)
+[![Maintainability](https://api.codeclimate.com/v1/badges/bc09bc91c31fed14924a/maintainability)](https://codeclimate.com/github/douglaslise/mongoid_enumerable/maintainability)
 
 Define enumerable fields in your Mongoid documents.
 
