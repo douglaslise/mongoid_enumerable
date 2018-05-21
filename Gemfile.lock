@@ -1,8 +1,8 @@
 PATH
   remote: .
   specs:
-    mongoid_enumerable (0.1.0)
-      mongoid
+    mongoid_enumerable (0.1.1)
+      mongoid (>= 4.0)
 
 GEM
   remote: https://rubygems.org/
