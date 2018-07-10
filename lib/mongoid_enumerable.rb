@@ -26,6 +26,10 @@ module MongoidEnumerable
         base.class.redefine_method(method_name) do
           base.where(field_name => value)
         end
+
+        base.class.redefine_method("all_#{field_name}") do
+          values
+        end
       end
     end
   end

@@ -30,6 +30,10 @@ RSpec.describe MongoidEnumerable do
         it { expect(model.st_completed?).to be_falsey }
       end
     end
+
+    it "returns all possible values" do
+      expect(klass.all_status).to match_array(%w(completed running failed waiting))
+    end
   end
 
   context "field as string" do
