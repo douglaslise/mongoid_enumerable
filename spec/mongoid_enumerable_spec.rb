@@ -157,5 +157,17 @@ RSpec.describe MongoidEnumerable do
         end
       end
     end
+
+    context "does not define scopes in another classes" do
+      let(:another_klass) do
+        Class.new do
+          include MongoidEnumerable
+          include Mongoid::Document
+          enumerable :status, %i(completed running failed waiting)
+        end
+      end
+
+      it { expect(another_klass).to_not respond_to(:st_completed)}
+    end
   end
 end
