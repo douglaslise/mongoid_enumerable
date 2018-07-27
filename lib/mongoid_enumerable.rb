@@ -23,9 +23,7 @@ module MongoidEnumerable
           send(field_name) == value
         end
 
-        base.define_singleton_method(method_name) do
-          base.where(field_name => value)
-        end
+        scope value, -> { where(field_name => value) }
       end
 
       base.define_singleton_method("all_#{field_name}") do
