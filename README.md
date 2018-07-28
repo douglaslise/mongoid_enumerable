@@ -95,3 +95,10 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/douglaslise/mongoid_enumerable.
+
+## Releasing a New Version
+After change version in file `lib/mongoid_enumerable/version.rb` it is needed only to run this command in terminal:
+
+```shell
+rake release
+```
