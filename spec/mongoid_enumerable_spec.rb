@@ -169,5 +169,19 @@ RSpec.describe MongoidEnumerable do
 
       it { expect(another_klass).to_not respond_to(:st_completed)}
     end
+
+    context 'when declared for a superclass' do
+      class SuperClass
+        include MongoidEnumerable
+        include Mongoid::Document
+        enumerable :status, %i(completed running failed waiting)
+      end
+
+      class SubClass < SuperClass; end
+
+      it 'preserves subclass in mongoid criterias' do
+        expect(SubClass.completed.klass).to equal(SubClass)
+      end
+    end
   end
 end
