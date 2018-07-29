@@ -261,8 +261,8 @@ RSpec.describe MongoidEnumerable do
       context "when method has wrong parameter number" do
         let(:klass) do
           Class.new do
-            include MongoidEnumerable
             include Mongoid::Document
+            include MongoidEnumerable
             enumerable :status, %i(completed running failed waiting), after_change: :status_changed
 
             def status_changed(old_value)
