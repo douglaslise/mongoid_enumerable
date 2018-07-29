@@ -2,59 +2,71 @@ require "mongoid_enumerable/version"
 require "mongoid"
 
 module MongoidEnumerable
-  def self.included(base)
-    base.class.redefine_method :enumerable do |field_name, values, options = {}|
-      field_name = String(field_name)
-      values.collect!(&:to_s)
+  def self.included(model)
+    define_enumerable_methods(model)
+  end
 
-      prefix = options.fetch(:prefix, "")
-      default = options.fetch(:default, values.first)
+  private
 
-      before_change = options.fetch(:before_change, nil)
-      after_change = options.fetch(:after_change, nil)
+  def self.define_enumerable_methods(model)
+    model.define_singleton_method :enumerable do |field_name, values, options = {}|
+      MongoidEnumerable.define_enumerable_method(model, field_name, values, options)
+    end
+  end
 
-      field(field_name, type: String, default: default)
+  def self.define_enumerable_method(model, field_name, values, options)
+    field_name = String(field_name)
+    values.collect!(&:to_s)
 
-      values.each do |value|
-        method_name = "#{prefix}#{value}"
+    prefix = options.fetch(:prefix, "")
+    default = options.fetch(:default, values.first)
 
-        define_method("#{method_name}!") do
-          value_before = send(field_name)
-          value_after = value
+    before_change = options.fetch(:before_change, nil)
+    after_change = options.fetch(:after_change, nil)
 
-          if before_change
-            before_change_method = method(before_change)
+    model.field(field_name, type: String, default: default)
 
-            if before_change_method.arity != 2 && before_change_method.arity >= 0
-              raise "Method #{before_change_method.name} must receive two parameters: old_value and new_value"
-            end
+    values.each do |value|
+      method_name = "#{prefix}#{value}"
 
-            if method(before_change).call(value_before, value_after)
-              update!(field_name => value)
-            end
-          else
-            update!(field_name => value)
-          end
+      define_method("#{method_name}!") do
+        value_before = send(field_name)
+        value_after = value
 
-          if after_change
-            after_change_method = method(after_change)
-            if after_change_method.arity != 2 && after_change_method.arity >= 0
-              raise "Method #{after_change_method.name} must receive two parameters: old_value and new_value"
-            end
-            after_change_method.call(value_before, value_after)
-          end
+        callback_result = run_callback(model, before_change, value_before, value_after)
+
+        if callback_result
+          update!(field_name => value)
+          run_callback(model, after_change, value_before, value_after)
         end
-
-        define_method("#{method_name}?") do
-          send(field_name) == value
-        end
-
-        scope value, -> { where(field_name => value) }
       end
 
-      base.define_singleton_method("all_#{field_name}") do
-        values
+      define_method("#{method_name}?") do
+        send(field_name) == value
       end
+
+      model.scope value, -> { where(field_name => value) }
+    end
+
+    model.define_singleton_method("all_#{field_name}") do
+      values
+    end
+  end
+
+  def run_callback(model, callback_method_name, value_before, value_after)
+    if callback_method_name
+      callback_method = method(callback_method_name)
+      validate_callback_method(callback_method)
+
+      callback_method.call(value_before, value_after)
+    else
+      true
+    end
+  end
+
+  def validate_callback_method(method)
+    if method.arity != 2 && method.arity >= 0
+      raise "Method #{method.name} must receive two parameters: old_value and new_value"
     end
   end
 end
