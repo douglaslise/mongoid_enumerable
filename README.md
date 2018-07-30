@@ -70,6 +70,57 @@ task.build_failed!
 task.deploy_running?
 task.deploy_failed!
 ```
+#### Callbacks
+##### Before Change
+You can define a `before_change` callback that runs before each change. If the method returns a falsey value (`nil` or `false`) then the change is be aborted.
+
+The method must receive two parameters: the old and the new value, respectively.
+
+Example:
+```ruby
+class Task
+  include Mongoid::Document
+  include MongoidEnumerable
+
+  enumerable :status, %w(completed running failed waiting), default: "waiting", before_change: :can_status_change?
+
+  def can_status_change?(old_value, new_value)
+    new_value != "waiting"
+  end
+end
+
+task = Task.new
+task.status # "waiting"
+
+task.running!
+task.status # "running"
+
+task.waiting!
+task.status # "running"
+```
+
+##### After Change
+You can define an `after_change` callback that runs after each change. The method must receive two parameters: the old and the new value, respectively.
+
+Example:
+```ruby
+class Task
+  include Mongoid::Document
+  include MongoidEnumerable
+
+  enumerable :status, %w(completed running failed waiting),
+    default: "waiting",
+    after_change: :status_changed
+
+  def status_changed(old_value, new_value)
+    puts "Status changed from #{old_value} to #{new_value}."
+  end
+end
+
+task = Task.new
+task.running!
+# Console output: "Status changed from waiting to running."
+```
 
 
 ### Scopes/Criterias
@@ -84,7 +135,6 @@ If prefixed, the scopes/criterias are prefixed too:
 Task.build_waiting # Returns all tasks with build waiting status
 Task.deploy_running # Returns all tasks with deploy running status
 ```
-
 
 ## Development
 

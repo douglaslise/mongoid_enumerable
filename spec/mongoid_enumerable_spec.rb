@@ -171,16 +171,108 @@ RSpec.describe MongoidEnumerable do
     end
 
     context 'when declared for a superclass' do
-      class SuperClass
-        include MongoidEnumerable
-        include Mongoid::Document
-        enumerable :status, %i(completed running failed waiting)
+      let(:super_class) do
+        Class.new do
+          include MongoidEnumerable
+          include Mongoid::Document
+          enumerable :status, %i(completed running failed waiting)
+        end
       end
 
-      class SubClass < SuperClass; end
+      let(:sub_class) { Class.new(super_class) }
 
       it 'preserves subclass in mongoid criterias' do
-        expect(SubClass.completed.klass).to equal(SubClass)
+        expect(sub_class.completed.klass).to equal(sub_class)
+      end
+    end
+  end
+
+  context "callbacks" do
+    context "before change" do
+      context "when method is correctly defined" do
+        let(:klass) do
+          Class.new do
+            include MongoidEnumerable
+            include Mongoid::Document
+            enumerable :status, %i(completed running failed waiting), before_change: :status_will_change
+
+            def status_will_change(old_value, new_value)
+            end
+          end
+        end
+
+        it "calls before_change callback before update" do
+          expect(model).to receive(:status_will_change).with("completed", "running")
+          model.running!
+        end
+      end
+
+      context "when method have wrong parameter number" do
+        let(:klass) do
+          Class.new do
+            include MongoidEnumerable
+            include Mongoid::Document
+            enumerable :status, %i(completed running failed waiting), before_change: :status_will_change
+
+            def status_will_change(old_value)
+            end
+          end
+        end
+
+        it "raises and error" do
+          expect{ model.running! }.to raise_error("Method status_will_change must receive two parameters: old_value and new_value")
+        end
+      end
+    end
+
+    context "after change" do
+      context "when method is correctly defined" do
+        let(:klass) do
+          Class.new do
+            include MongoidEnumerable
+            include Mongoid::Document
+            enumerable :status, %i(completed running failed waiting), after_change: :status_changed, before_change: :status_will_change
+
+            def status_will_change(old_value, new_value)
+              # Avoiding change status to failed
+              new_value != "failed"
+            end
+
+            def status_changed(old_value, new_value)
+            end
+          end
+        end
+
+        context "and before callback allows the modification" do
+          it "calls after_change callback before update" do
+            expect(model).to receive(:status_changed).with("completed", "running")
+            model.running!
+          end
+        end
+
+        context "and before callback does not allow the modification" do
+          it "calls after_change callback before update" do
+            expect(model).to_not receive(:status_changed)
+            model.failed!
+          end
+        end
+      end
+
+      context "when method has wrong parameter number" do
+        let(:klass) do
+          Class.new do
+            include Mongoid::Document
+            include MongoidEnumerable
+            enumerable :status, %i(completed running failed waiting), after_change: :status_changed
+
+            def status_changed(old_value)
+            end
+          end
+        end
+
+        it "raises an error" do
+          expect{ model.running! }.to raise_error("Method status_changed must receive two parameters: old_value and new_value")
+        end
       end
     end
   end
