@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    mongoid_enumerable (0.3.1)
+    mongoid_enumerable (0.4.0)
       mongoid (>= 4.0)
 
 GEM
@@ -107,4 +107,4 @@ DEPENDENCIES
   simplecov
 
 BUNDLED WITH
-   1.16.2
+   1.16.4
