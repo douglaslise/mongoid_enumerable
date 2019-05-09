@@ -62,7 +62,7 @@ module MongoidEnumerable
       send(field_name) == value
     end
 
-    model.scope value, -> { where(field_name => value) }
+    model.scope method_name, -> { where(field_name => value) }
   end
 
   def run_callback(model:, callback_method_name:, value_before:, value_after:)

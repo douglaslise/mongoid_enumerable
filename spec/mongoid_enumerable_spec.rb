@@ -115,45 +115,45 @@ RSpec.describe MongoidEnumerable do
       Class.new do
         include MongoidEnumerable
         include Mongoid::Document
-        enumerable :status, %i(completed running failed waiting)
+        enumerable :status, %i(completed running failed waiting), prefix: "build_"
       end
     end
 
     context "define scopes for all values" do
       context "completed" do
-        it {expect(klass).to respond_to(:completed)}
+        it {expect(klass).to respond_to(:build_completed)}
         it "is a scope" do
-          expect(klass.completed).to be_a(Mongoid::Criteria)
+          expect(klass.build_completed).to be_a(Mongoid::Criteria)
         end
         it "with selector" do
-          expect(klass.completed.selector).to eq({"status" => "completed"})
+          expect(klass.build_completed.selector).to eq({"status" => "completed"})
         end
       end
       context "waiting" do
-        it {expect(klass).to respond_to(:waiting)}
+        it {expect(klass).to respond_to(:build_waiting)}
         it "is a scope" do
-          expect(klass.waiting).to be_a(Mongoid::Criteria)
+          expect(klass.build_waiting).to be_a(Mongoid::Criteria)
         end
         it "with selector" do
-          expect(klass.waiting.selector).to eq({"status" => "waiting"})
+          expect(klass.build_waiting.selector).to eq({"status" => "waiting"})
         end
       end
       context "failed" do
-        it {expect(klass).to respond_to(:failed)}
+        it {expect(klass).to respond_to(:build_failed)}
         it "is a scope" do
-          expect(klass.failed).to be_a(Mongoid::Criteria)
+          expect(klass.build_failed).to be_a(Mongoid::Criteria)
         end
         it "with selector" do
-          expect(klass.failed.selector).to eq({"status" => "failed"})
+          expect(klass.build_failed.selector).to eq({"status" => "failed"})
         end
       end
       context "running" do
-        it {expect(klass).to respond_to(:running)}
+        it {expect(klass).to respond_to(:build_running)}
         it "is a scope" do
-          expect(klass.running).to be_a(Mongoid::Criteria)
+          expect(klass.build_running).to be_a(Mongoid::Criteria)
         end
         it "with selector" do
-          expect(klass.running.selector).to eq({"status" => "running"})
+          expect(klass.build_running.selector).to eq({"status" => "running"})
         end
       end
     end
