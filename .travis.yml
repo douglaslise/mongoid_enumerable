@@ -5,7 +5,6 @@ rvm:
   - 2.6.0
   - 2.5.1
   - 2.4.3
-before_install: gem install bundler -v 1.16.1
 env:
   global:
     - CC_TEST_REPORTER_ID=049baa35735ad9587a7ff016745e67eb057ef79958cb31113d4a19cc504c0216
