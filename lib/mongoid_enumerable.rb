@@ -44,7 +44,7 @@ module MongoidEnumerable
   def self.define_value_methods(model:, value:, field_name:, prefix:, before_change:, after_change:)
     method_name = "#{prefix}#{value}"
 
-    define_method("#{method_name}!") do
+    model.define_method("#{method_name}!") do
       value_before = send(field_name)
       value_after = value
 
