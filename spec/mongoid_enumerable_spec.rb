@@ -55,26 +55,27 @@ RSpec.describe MongoidEnumerable do
       Class.new do
         include MongoidEnumerable
         include Mongoid::Document
-        enumerable :status, %i(completed running failed waiting), default: :waiting, prefix: "st_"
+        enumerable :status, %i(completed running failed waiting), default: :waiting
       end
     end
 
     context "completed!" do
       it "updates value with \"completed\"" do
         expect(model).to receive(:update!).with("status" => "completed")
-        model.st_completed!
+        model.completed!
       end
     end
 
     context "completed?" do
       context "when completed" do
-        before { model.st_completed! }
-        it { expect(model.st_completed?).to be_truthy }
+        before { model.completed! }
+        it { expect(model.completed?).to be_truthy }
       end
 
       context "when not completed" do
-        before { model.st_waiting! }
-        it { expect(model.st_completed?).to be_falsey }
+        before { model.waiting! }
+        it { expect(model.completed?).to be_falsey }
+      end
       end
     end
   end
