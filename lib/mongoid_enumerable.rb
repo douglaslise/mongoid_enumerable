@@ -8,8 +8,6 @@ module MongoidEnumerable
     define_enumerable_methods(model)
   end
 
-  private
-
   def self.define_enumerable_methods(model)
     model.define_singleton_method :enumerable do |field_name, values, options = {}|
       MongoidEnumerable.define_enumerable_method(
@@ -79,6 +77,8 @@ module MongoidEnumerable
   end
 
   def validate_callback_method(method:)
-    raise "Method #{method.name} must receive two parameters: old_value and new_value" if method.arity != 2 && method.arity >= 0
+    return if method.arity == 2 || method.arity.negative?
+
+    raise "Method #{method.name} must receive two parameters: old_value and new_value"
   end
 end

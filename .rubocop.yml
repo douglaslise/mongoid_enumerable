@@ -1,5 +1,3 @@
-inherit_from: .rubocop_todo.yml
-
 AllCops:
   NewCops: disable
 
@@ -12,3 +10,12 @@ Style/Documentation:
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'
+
+Metrics/ParameterLists:
+  Max: 7
+
+Layout/LineLength:
+  Max: 120
+
+Metrics/MethodLength:
+  Max: 16

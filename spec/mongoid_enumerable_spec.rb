@@ -269,7 +269,9 @@ RSpec.describe MongoidEnumerable do
         end
 
         it "raises and error" do
-          expect { model.running! }.to raise_error("Method status_will_change must receive two parameters: old_value and new_value")
+          expect { model.running! }.to raise_error(
+            "Method status_will_change must receive two parameters: old_value and new_value"
+          )
         end
       end
     end
@@ -280,7 +282,10 @@ RSpec.describe MongoidEnumerable do
           Class.new do
             include MongoidEnumerable
             include Mongoid::Document
-            enumerable :status, %i[completed running failed waiting], after_change: :status_changed, before_change: :status_will_change
+            enumerable :status,
+                       %i[completed running failed waiting],
+                       after_change: :status_changed,
+                       before_change: :status_will_change
 
             def status_will_change(_old_value, new_value)
               # Avoiding change status to failed
@@ -318,7 +323,9 @@ RSpec.describe MongoidEnumerable do
         end
 
         it "raises an error" do
-          expect { model.running! }.to raise_error("Method status_changed must receive two parameters: old_value and new_value")
+          expect { model.running! }.to raise_error(
+            "Method status_changed must receive two parameters: old_value and new_value"
+          )
         end
       end
     end
