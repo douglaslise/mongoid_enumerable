@@ -12,9 +12,5 @@ Metrics/MethodLength:
 Metrics/ParameterLists:
   Max: 7
 
-Style/ExpandPathArguments:
-  Exclude:
-    - 'mongoid_enumerable.gemspec'
-
 Layout/LineLength:
   Max: 135
