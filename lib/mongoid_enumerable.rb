@@ -50,12 +50,12 @@ module MongoidEnumerable
       value_before = send(field_name)
       value_after = value
 
-      callback_result = run_callback(model: model, callback_method_name: before_change,
+      callback_result = run_callback(callback_method_name: before_change,
                                      value_before: value_before, value_after: value_after)
 
       if callback_result
         update!(field_name => value)
-        run_callback(model: model, callback_method_name: after_change,
+        run_callback(callback_method_name: after_change,
                      value_before: value_before, value_after: value_after)
       end
     end
@@ -67,7 +67,7 @@ module MongoidEnumerable
     model.scope method_name, -> { where(field_name => value) }
   end
 
-  def run_callback(model:, callback_method_name:, value_before:, value_after:)
+  def run_callback(callback_method_name:, value_before:, value_after:)
     if callback_method_name
       callback_method = method(callback_method_name)
       validate_callback_method(method: callback_method)

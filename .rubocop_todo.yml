@@ -5,7 +5,6 @@ Lint/IneffectiveAccessModifier:
 Lint/UnusedMethodArgument:
   Exclude:
     - 'lib/mongoid_enumerable.rb'
-    - 'spec/mongoid_enumerable_spec.rb'
 
 Metrics/BlockLength:
   Exclude:

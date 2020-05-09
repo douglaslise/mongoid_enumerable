@@ -234,6 +234,27 @@ RSpec.describe MongoidEnumerable do
           expect(model).to receive(:status_will_change).with("completed", "running")
           model.running!
         end
+
+        context "and there is another class with the same callback name" do
+          let(:another_klass) do
+            Class.new do
+              include MongoidEnumerable
+              include Mongoid::Document
+              enumerable :status, %i[completed dead], before_change: :status_will_change
+            end
+          end
+          let!(:another_model) { another_klass }
+
+          it "the same model callback is called" do
+            expect(model).to receive(:status_will_change).with("completed", "running")
+            model.running!
+          end
+
+          it "the other model callback is called" do
+            expect(another_model).to_not receive(:status_will_change) # .with("completed", "running")
+            model.running!
+          end
+        end
       end
 
       context "when method have wrong parameter number" do
