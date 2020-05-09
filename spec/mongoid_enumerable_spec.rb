@@ -80,7 +80,7 @@ RSpec.describe MongoidEnumerable do
       end
 
       context "when there are other class with the same enumerable value" do
-        let(:another_class) do
+        let(:another_klass) do
           Class.new do
             include MongoidEnumerable
             include Mongoid::Document
@@ -88,7 +88,7 @@ RSpec.describe MongoidEnumerable do
           end
         end
 
-        let(:another_model) { another_class.new(other_field: "completed") }
+        let(:another_model) { another_klass.new(other_field: "completed") }
         before { another_model }
 
         it "cannot have running method" do
@@ -282,7 +282,7 @@ RSpec.describe MongoidEnumerable do
             include Mongoid::Document
             enumerable :status, %i[completed running failed waiting], after_change: :status_changed, before_change: :status_will_change
 
-            def status_will_change(old_value, new_value)
+            def status_will_change(_old_value, new_value)
               # Avoiding change status to failed
               new_value != "failed"
             end
