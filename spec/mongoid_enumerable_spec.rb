@@ -76,6 +76,33 @@ RSpec.describe MongoidEnumerable do
         before { model.waiting! }
         it { expect(model.completed?).to be_falsey }
       end
+
+      context "when there are other class with the same enumerable value" do
+        let(:another_class) do
+          Class.new do
+            include MongoidEnumerable
+            include Mongoid::Document
+            enumerable :other_field, %i(completed dead)
+          end
+        end
+
+        let(:another_model) { another_class.new(other_field: "completed") }
+        before { another_model }
+
+        it "cannot have running method" do
+          expect(another_model).to respond_to(:dead?)
+          expect(model).to_not respond_to(:dead?)
+        end
+
+        context "when completed" do
+          before { model.completed! }
+          it { expect(model.completed?).to be_truthy }
+        end
+
+        context "when not completed" do
+          before { model.waiting! }
+          it { expect(model.completed?).to be_falsey }
+        end
       end
     end
   end
