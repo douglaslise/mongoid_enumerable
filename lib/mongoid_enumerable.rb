@@ -58,7 +58,7 @@ module MongoidEnumerable
       end
     end
 
-    define_method("#{method_name}?") do
+    model.define_method("#{method_name}?") do
       send(field_name) == value
     end
 
