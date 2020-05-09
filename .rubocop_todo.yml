@@ -6,10 +6,6 @@ Lint/UnusedMethodArgument:
   Exclude:
     - 'lib/mongoid_enumerable.rb'
 
-Metrics/BlockLength:
-  Exclude:
-    - 'spec/**/*'
-
 Metrics/MethodLength:
   Max: 16
 
