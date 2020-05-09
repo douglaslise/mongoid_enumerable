@@ -37,7 +37,7 @@ class Task
   include Mongoid::Document
   include MongoidEnumerable
 
-  enumerable :status, %w(completed running failed waiting), default: "waiting"
+  enumerable :status, %w[completed running failed waiting], default: "waiting"
 end
 ```
 
@@ -57,13 +57,13 @@ task.waiting? # false
 #### Default
 Defines which value is the default for new documents. If not specified the first value is used as default.
 ```ruby
-enumerable :status, %w(completed running failed waiting), default: "waiting"
+enumerable :status, %w[completed running failed waiting], default: "waiting"
 ```
 #### Prefix
 You can define a prefix for your methods that could be useful if you have more than one enumerable with the same values.
 ```ruby
-enumerable :build_status, %w(completed running failed waiting), default: "waiting", prefix: "build_"
-enumerable :deploy_status, %w(completed running failed waiting), default: "waiting", prefix: "deploy_"
+enumerable :build_status, %w[completed running failed waiting], default: "waiting", prefix: "build_"
+enumerable :deploy_status, %w[completed running failed waiting], default: "waiting", prefix: "deploy_"
 
 task.build_completed?
 task.build_failed!
@@ -82,7 +82,7 @@ class Task
   include Mongoid::Document
   include MongoidEnumerable
 
-  enumerable :status, %w(completed running failed waiting), default: "waiting", before_change: :can_status_change?
+  enumerable :status, %w[completed running failed waiting], default: "waiting", before_change: :can_status_change?
 
   def can_status_change?(old_value, new_value)
     new_value != "waiting"
@@ -108,7 +108,7 @@ class Task
   include Mongoid::Document
   include MongoidEnumerable
 
-  enumerable :status, %w(completed running failed waiting),
+  enumerable :status, %w[completed running failed waiting],
     default: "waiting",
     after_change: :status_changed
 
