@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe MongoidEnumerable do
   let(:model) { klass.new }
 
@@ -8,7 +10,7 @@ RSpec.describe MongoidEnumerable do
       Class.new do
         include MongoidEnumerable
         include Mongoid::Document
-        enumerable :status, %i(completed running failed waiting), default: :waiting, prefix: "st_"
+        enumerable :status, %i[completed running failed waiting], default: :waiting, prefix: "st_"
       end
     end
 
@@ -32,7 +34,7 @@ RSpec.describe MongoidEnumerable do
     end
 
     it "returns all possible values" do
-      expect(klass.all_status).to match_array(%w(completed running failed waiting))
+      expect(klass.all_status).to match_array(%w[completed running failed waiting])
     end
   end
 
@@ -41,7 +43,7 @@ RSpec.describe MongoidEnumerable do
       Class.new do
         include MongoidEnumerable
         include Mongoid::Document
-        enumerable "status", %i(completed running failed waiting), default: :waiting, prefix: "st_"
+        enumerable "status", %i[completed running failed waiting], default: :waiting, prefix: "st_"
       end
     end
 
@@ -55,7 +57,7 @@ RSpec.describe MongoidEnumerable do
       Class.new do
         include MongoidEnumerable
         include Mongoid::Document
-        enumerable :status, %i(completed running failed waiting), default: :waiting
+        enumerable :status, %i[completed running failed waiting], default: :waiting
       end
     end
 
@@ -82,7 +84,7 @@ RSpec.describe MongoidEnumerable do
           Class.new do
             include MongoidEnumerable
             include Mongoid::Document
-            enumerable :other_field, %i(completed dead)
+            enumerable :other_field, %i[completed dead]
           end
         end
 
@@ -113,7 +115,7 @@ RSpec.describe MongoidEnumerable do
         Class.new do
           include MongoidEnumerable
           include Mongoid::Document
-          enumerable :status, %i(completed running failed waiting), default: "waiting"
+          enumerable :status, %i[completed running failed waiting], default: "waiting"
         end
       end
 
@@ -128,7 +130,7 @@ RSpec.describe MongoidEnumerable do
         Class.new do
           include MongoidEnumerable
           include Mongoid::Document
-          enumerable :status, %i(completed running failed waiting)
+          enumerable :status, %i[completed running failed waiting]
         end
       end
 
@@ -143,45 +145,45 @@ RSpec.describe MongoidEnumerable do
       Class.new do
         include MongoidEnumerable
         include Mongoid::Document
-        enumerable :status, %i(completed running failed waiting), prefix: "build_"
+        enumerable :status, %i[completed running failed waiting], prefix: "build_"
       end
     end
 
     context "define scopes for all values" do
       context "completed" do
-        it {expect(klass).to respond_to(:build_completed)}
+        it { expect(klass).to respond_to(:build_completed) }
         it "is a scope" do
           expect(klass.build_completed).to be_a(Mongoid::Criteria)
         end
         it "with selector" do
-          expect(klass.build_completed.selector).to eq({"status" => "completed"})
+          expect(klass.build_completed.selector).to eq({ "status" => "completed" })
         end
       end
       context "waiting" do
-        it {expect(klass).to respond_to(:build_waiting)}
+        it { expect(klass).to respond_to(:build_waiting) }
         it "is a scope" do
           expect(klass.build_waiting).to be_a(Mongoid::Criteria)
         end
         it "with selector" do
-          expect(klass.build_waiting.selector).to eq({"status" => "waiting"})
+          expect(klass.build_waiting.selector).to eq({ "status" => "waiting" })
         end
       end
       context "failed" do
-        it {expect(klass).to respond_to(:build_failed)}
+        it { expect(klass).to respond_to(:build_failed) }
         it "is a scope" do
           expect(klass.build_failed).to be_a(Mongoid::Criteria)
         end
         it "with selector" do
-          expect(klass.build_failed.selector).to eq({"status" => "failed"})
+          expect(klass.build_failed.selector).to eq({ "status" => "failed" })
         end
       end
       context "running" do
-        it {expect(klass).to respond_to(:build_running)}
+        it { expect(klass).to respond_to(:build_running) }
         it "is a scope" do
           expect(klass.build_running).to be_a(Mongoid::Criteria)
         end
         it "with selector" do
-          expect(klass.build_running.selector).to eq({"status" => "running"})
+          expect(klass.build_running.selector).to eq({ "status" => "running" })
         end
       end
     end
@@ -191,25 +193,25 @@ RSpec.describe MongoidEnumerable do
         Class.new do
           include MongoidEnumerable
           include Mongoid::Document
-          enumerable :status, %i(completed running failed waiting)
+          enumerable :status, %i[completed running failed waiting]
         end
       end
 
-      it { expect(another_klass).to_not respond_to(:st_completed)}
+      it { expect(another_klass).to_not respond_to(:st_completed) }
     end
 
-    context 'when declared for a superclass' do
+    context "when declared for a superclass" do
       let(:super_class) do
         Class.new do
           include MongoidEnumerable
           include Mongoid::Document
-          enumerable :status, %i(completed running failed waiting)
+          enumerable :status, %i[completed running failed waiting]
         end
       end
 
       let(:sub_class) { Class.new(super_class) }
 
-      it 'preserves subclass in mongoid criterias' do
+      it "preserves subclass in mongoid criterias" do
         expect(sub_class.completed.klass).to equal(sub_class)
       end
     end
@@ -222,10 +224,9 @@ RSpec.describe MongoidEnumerable do
           Class.new do
             include MongoidEnumerable
             include Mongoid::Document
-            enumerable :status, %i(completed running failed waiting), before_change: :status_will_change
+            enumerable :status, %i[completed running failed waiting], before_change: :status_will_change
 
-            def status_will_change(old_value, new_value)
-            end
+            def status_will_change(old_value, new_value); end
           end
         end
 
@@ -240,15 +241,14 @@ RSpec.describe MongoidEnumerable do
           Class.new do
             include MongoidEnumerable
             include Mongoid::Document
-            enumerable :status, %i(completed running failed waiting), before_change: :status_will_change
+            enumerable :status, %i[completed running failed waiting], before_change: :status_will_change
 
-            def status_will_change(old_value)
-            end
+            def status_will_change(old_value); end
           end
         end
 
         it "raises and error" do
-          expect{ model.running! }.to raise_error("Method status_will_change must receive two parameters: old_value and new_value")
+          expect { model.running! }.to raise_error("Method status_will_change must receive two parameters: old_value and new_value")
         end
       end
     end
@@ -259,15 +259,14 @@ RSpec.describe MongoidEnumerable do
           Class.new do
             include MongoidEnumerable
             include Mongoid::Document
-            enumerable :status, %i(completed running failed waiting), after_change: :status_changed, before_change: :status_will_change
+            enumerable :status, %i[completed running failed waiting], after_change: :status_changed, before_change: :status_will_change
 
             def status_will_change(old_value, new_value)
               # Avoiding change status to failed
               new_value != "failed"
             end
 
-            def status_changed(old_value, new_value)
-            end
+            def status_changed(old_value, new_value); end
           end
         end
 
@@ -291,15 +290,14 @@ RSpec.describe MongoidEnumerable do
           Class.new do
             include Mongoid::Document
             include MongoidEnumerable
-            enumerable :status, %i(completed running failed waiting), after_change: :status_changed
+            enumerable :status, %i[completed running failed waiting], after_change: :status_changed
 
-            def status_changed(old_value)
-            end
+            def status_changed(old_value); end
           end
         end
 
         it "raises an error" do
-          expect{ model.running! }.to raise_error("Method status_changed must receive two parameters: old_value and new_value")
+          expect { model.running! }.to raise_error("Method status_changed must receive two parameters: old_value and new_value")
         end
       end
     end

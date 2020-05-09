@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require "bundler/setup"
 require "mongoid_enumerable"
-require 'simplecov'
+require "simplecov"
 
 SimpleCov.start
 

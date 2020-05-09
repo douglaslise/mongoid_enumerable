@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "mongoid_enumerable/version"
 require "mongoid"
 
@@ -49,12 +51,12 @@ module MongoidEnumerable
       value_after = value
 
       callback_result = run_callback(model: model, callback_method_name: before_change,
-        value_before: value_before, value_after: value_after)
+                                     value_before: value_before, value_after: value_after)
 
       if callback_result
         update!(field_name => value)
         run_callback(model: model, callback_method_name: after_change,
-          value_before: value_before, value_after: value_after)
+                     value_before: value_before, value_after: value_after)
       end
     end
 
@@ -77,8 +79,6 @@ module MongoidEnumerable
   end
 
   def validate_callback_method(method:)
-    if method.arity != 2 && method.arity >= 0
-      raise "Method #{method.name} must receive two parameters: old_value and new_value"
-    end
+    raise "Method #{method.name} must receive two parameters: old_value and new_value" if method.arity != 2 && method.arity >= 0
   end
 end
