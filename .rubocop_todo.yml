@@ -1,0 +1,25 @@
+Lint/IneffectiveAccessModifier:
+  Exclude:
+    - 'lib/mongoid_enumerable.rb'
+
+Lint/UnusedMethodArgument:
+  Exclude:
+    - 'lib/mongoid_enumerable.rb'
+    - 'spec/mongoid_enumerable_spec.rb'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+
+Metrics/MethodLength:
+  Max: 16
+
+Metrics/ParameterLists:
+  Max: 7
+
+Style/ExpandPathArguments:
+  Exclude:
+    - 'mongoid_enumerable.gemspec'
+
+Layout/LineLength:
+  Max: 135
