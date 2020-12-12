@@ -17,6 +17,10 @@ jobs:
   test:
 
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby: [ '2.5', '2.6', '2.7' ]
+    name: Ruby ${{ matrix.ruby }} sample
 
     steps:
     - uses: actions/checkout@v2
@@ -26,7 +30,7 @@ jobs:
     # uses: ruby/setup-ruby@v1
       uses: ruby/setup-ruby@21351ecc0a7c196081abca5dc55b08f085efe09a
       with:
-        ruby-version: 2.7
+        ruby-version: ${{ matrix.ruby }}
     - name: Install dependencies
       run: bundle install
     - name: Run tests
