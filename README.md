@@ -1,6 +1,7 @@
 # Mongoid Enumerable
 
-[![Build Status](https://travis-ci.org/douglaslise/mongoid_enumerable.svg?branch=master)](https://travis-ci.org/douglaslise/mongoid_enumerable)
+[![Unit Tests](https://github.com/douglaslise/mongoid_enumerable/workflows/Unit%20Tests%20-%20RSpec/badge.svg?branch=master)](https://github.com/douglaslise/mongoid_enumerable/actions?query=workflow%3A%22Unit+Tests+-+RSpec%22+branch%3Amaster)
+[![Lint](https://github.com/douglaslise/mongoid_enumerable/workflows/Lint%20-%20Rubocop/badge.svg?branch=master)](https://github.com/douglaslise/mongoid_enumerable/actions?query=workflow%3A%22Lint+-+Rubocop%22+branch%3Amaster)
 [![Maintainability](https://api.codeclimate.com/v1/badges/bc09bc91c31fed14924a/maintainability)](https://codeclimate.com/github/douglaslise/mongoid_enumerable/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/bc09bc91c31fed14924a/test_coverage)](https://codeclimate.com/github/douglaslise/mongoid_enumerable/test_coverage)
 [![Gem Version](https://badge.fury.io/rb/mongoid_enumerable.svg)](https://badge.fury.io/rb/mongoid_enumerable)
