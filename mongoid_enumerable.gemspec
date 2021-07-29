@@ -9,9 +9,10 @@ Gem::Specification.new do |spec|
   spec.version       = MongoidEnumerable::VERSION
   spec.authors       = ["Douglas Lise"]
   spec.email         = ["douglaslise@gmail.com"]
+  spec.licenses      = ["MIT"]
 
-  spec.summary       = "Mongoid Enumerable"
-  spec.description   = "Mongoid Enumerable"
+  spec.summary       = "MongoId Enumerable"
+  spec.description   = "MongoId Enumerable allows to have enumerable fields in MongoId Documents"
   spec.homepage      = "https://github.com/douglaslise/mongoid_enumerable"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
