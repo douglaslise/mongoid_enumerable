@@ -8,6 +8,19 @@
 
 Define enumerable fields in your Mongoid documents.
 
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Options](#options)
+    - [Default](#default)
+    - [Prefix](#prefix)
+    - [Callbacks](#callbacks)
+      - [Before Change](#before-change)
+      - [After Change](#after-change)
+  - [Scopes/Criterias](#scopescriterias)
+- [Development](#development)
+- [Contributing](#contributing)
+- [Releasing a New Version](#releasing-a-new-version)
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -18,18 +31,24 @@ gem 'mongoid_enumerable'
 
 And then execute:
 
-    $ bundle
+```shell
+bundle
+```
 
 Or install it yourself as:
 
-    $ gem install mongoid_enumerable
+```shell
+gem install mongoid_enumerable
+```
 
 ## Usage
+
 Simply include `MongoidEnumerable` in your document.
 After add `enumerable` with:
- - Field name
- - An array with possible values
- - Options (`default` and/or `prefix`)
+
+- Field name
+- An array with possible values
+- Options (default, prefix and callbacks)
 
 Example:
 
@@ -43,6 +62,7 @@ end
 ```
 
 Now we have methods in this document's instance:
+
 ```ruby
 task = Task.new
 
@@ -55,29 +75,46 @@ task.waiting? # false
 ```
 
 ### Options
+
 #### Default
+
 Defines which value is the default for new documents. If not specified the first value is used as default.
+
 ```ruby
 enumerable :status, %w[completed running failed waiting], default: "waiting"
 ```
+
 #### Prefix
+
 You can define a prefix for your methods that could be useful if you have more than one enumerable with the same values.
+
 ```ruby
-enumerable :build_status, %w[completed running failed waiting], default: "waiting", prefix: "build_"
-enumerable :deploy_status, %w[completed running failed waiting], default: "waiting", prefix: "deploy_"
+enumerable :build_status,
+           %w[completed running failed waiting],
+           default: "waiting",
+           prefix: "build_"
+
+enumerable :deploy_status,
+           %w[completed running failed waiting],
+           default: "waiting",
+           prefix: "deploy_"
 
 task.build_completed?
 task.build_failed!
 task.deploy_running?
 task.deploy_failed!
 ```
+
 #### Callbacks
+
 ##### Before Change
-You can define a `before_change` callback that runs before each change. If the method returns a falsey value (`nil` or `false`) then the change is be aborted.
+
+You can define a `before_change` callback that runs before each change. If the method returns a falsey value (`nil` or `false`) then the change will be aborted.
 
 The method must receive two parameters: the old and the new value, respectively.
 
 Example:
+
 ```ruby
 class Task
   include Mongoid::Document
@@ -101,9 +138,11 @@ task.status # "running"
 ```
 
 ##### After Change
+
 You can define an `after_change` callback that runs after each change. The method must receive two parameters: the old and the new value, respectively.
 
 Example:
+
 ```ruby
 class Task
   include Mongoid::Document
@@ -123,15 +162,17 @@ task.running!
 # Console output: "Status changed from waiting to running."
 ```
 
-
 ### Scopes/Criterias
+
 All values are added as scopes/criterias to your document class:
+
 ```ruby
 Task.waiting # Returns all tasks with waiting status
 Task.running # Returns all tasks with running status
 ```
 
 If prefixed, the scopes/criterias are prefixed too:
+
 ```ruby
 Task.build_waiting # Returns all tasks with build waiting status
 Task.deploy_running # Returns all tasks with deploy running status
@@ -145,9 +186,10 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/douglaslise/mongoid_enumerable.
+Bug reports and pull requests are welcome on GitHub at <https://github.com/douglaslise/mongoid_enumerable>.
 
 ## Releasing a New Version
+
 After change version in file `lib/mongoid_enumerable/version.rb` it is needed only to run this command in terminal:
 
 ```shell
